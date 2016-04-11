@@ -1,34 +1,47 @@
 'use strict'
-
 import React, {
-	StyleSheet,
-	ScrollView,
-	View
-}
-from 'react-native';
+    StyleSheet,
+    Dimensions,
+    Animated,
+    PanResponder,
+    View,
+    Image
+} from 'react-native';
+
+let {width,height} =  Dimensions.get('window');
 
 export default class Swiper extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
-		return (
-		  	<ScrollView
-		  		ref={'sv'}
-		  		onScroll={e=>console.log(this,e)}
-				style={[this.props.style,styles.swiper]}
-				horizontal={true}>
-				{this.props.children.map((v,k)=>{
-					return <View key={k} style={{}}>{v}</View>
-				})}
-			</ScrollView>
-		);
-	}
-}
+    componentWillMount() {
+        console.log('test');
+        this._panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: e => true,
+            onMoveShouldSetPanResponder: e => true,
+            onPanResponderGrant: (e, g) => {
 
-const styles = StyleSheet.create({
-	swiper: {
-		width:100,
-		backgroundColor:'red'
-	}
-});
+            },
+            onPanResponderMove: (e, g) => {},
+            onPanResponderRelease: (e, g) => {
+
+            }
+        })
+    }
+    render() {
+        return (
+            <Animated.View
+                style={[{height:150,width:width * 2,backgroundColor:'red',flexDirection:'row'}]}>
+                <View style={{flex:1}}>
+                    <Image
+                      style={{flex:1}}
+                      source={{uri: 'http://www.iconpng.com/png/flaticon_user-set/woman48.png'}} />
+                    
+                </View>
+                <View style={{flex:1}}>
+                    <Image
+                      style={{flex:1}}
+                      source={{uri: 'http://www.iconpng.com/png/flaticon_user-set/woman48.png'}} />
+                    
+                </View>
+            </Animated.View>
+        );
+    }
+}
