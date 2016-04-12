@@ -51,16 +51,48 @@ export default class Swiper extends React.Component {
             }
         })
     }
+    renderButton(){
+        let btns = [];
+        for (let i = 0; i < this._childrenLen; i++) {
+            btns.push(<View key={i} style={styles.btn}></View>)
+        }
+        return (
+            <View style={styles.btn_box}>{btns}</View>
+        );
+    }
     render() {
         return (
-            <Animated.View
+            <View 
                 {...this._panResponder.panHandlers}
-                ref={e=>this._view = e}
-                style={[{height:this.props.height,width:this._maxWidth,flexDirection:'row',marginLeft:this.state.marginLeftAnim}]}>
-                {this.props.children.map((v,k)=>{
-                    return <View key={k} style={{flex:1}}>{v}</View>
-                })}
-            </Animated.View>
+                style={{}}>
+                <Animated.View
+                    ref={e=>this._view = e}
+                    style={[{height:this.props.height,width:this._maxWidth,flexDirection:'row',marginLeft:this.state.marginLeftAnim}]}>
+                    {this.props.children.map((v,k)=>{
+                        return <View key={k} style={{flex:1}}>{v}</View>
+                    })}
+                </Animated.View>
+                {this.props.showButton && this.renderButton()}
+            </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    btn_box: {
+        height: 20,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        flexDirection: 'row',
+        position: 'absolute',
+        justifyContent: 'center',
+    },
+    btn: {
+        backgroundColor: '#00f6',
+        width: 10,
+        height: 10,
+        borderRadius: 10,
+        margin: 2
+    }
+});
