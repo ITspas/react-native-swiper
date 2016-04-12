@@ -30,6 +30,7 @@ export default class Swiper extends React.Component {
             onStartShouldSetPanResponder: e => true,
             onMoveShouldSetPanResponder: e => true,
             onPanResponderMove: (e, g) => {
+                this._isMove = true;
                 this._marginLeft = g.dx + (-this._index * width);
                 this._marginLeft > 0 && (this._marginLeft = 0);
                 this._marginLeft < (-this._maxMarginLeft) && (this._marginLeft = -this._maxMarginLeft);
@@ -38,23 +39,24 @@ export default class Swiper extends React.Component {
                 });
             },
             onPanResponderRelease: (e, g) => {
+                if (!this._isMove) return;
                 this._index = Math.abs(Math.round(this._marginLeft / width));
                 this.setState({
                     marginLeftAnim: new Animated.Value(this._marginLeft)
                 });
                 Animated.spring(
-                    this.state.marginLeftAnim,
-                    {
+                    this.state.marginLeftAnim, {
                         toValue: -this._index * width
                     },
                 ).start();
+                this._isMove = false;
             }
         })
     }
     renderButton(){
         let btns = [];
         for (let i = 0; i < this._childrenLen; i++) {
-            btns.push(<View key={i} style={styles.btn}></View>)
+            btns.push(<View key={i} style={[styles.btn,this._index == i && {backgroundColor:this.props.showButton.activeColor}]}></View>)
         }
         return (
             <View style={styles.btn_box}>{btns}</View>
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     btn: {
-        backgroundColor: '#00f6',
+        backgroundColor: '#00f8',
         width: 10,
         height: 10,
         borderRadius: 10,
