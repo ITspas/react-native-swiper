@@ -17,13 +17,11 @@ let {
 export default class Swiper extends React.Component {
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {
             marginLeftAnim: new Animated.Value(0)
         };
         this._index = 0;
-        this._childrenLen = this.props.children && this.props.children.length || 1;
-        this._maxWidth = this._childrenLen * width;
-        this._maxMarginLeft = this._maxWidth - width;
         this._marginLeft = 0;
     }
     componentWillMount() {
@@ -67,8 +65,9 @@ export default class Swiper extends React.Component {
         ).start();
     }
     renderButton(){
-        let btns = [];
-        for (let i = 0; i < this._childrenLen; i++) {
+        let btns = [],
+            childrenLen = this.props.children && this.props.children.length || 0;
+        for (let i = 0; i < childrenLen; i++) {
             btns.push(
                 <TouchableOpacity key={i} onPress={e=>this.scrollTo(i)}>
                     <View style={[styles.btn,this.props.buttonStyle,this._index == i && styles.abtn,this._index == i && this.props.activeStyle]}>
@@ -81,6 +80,8 @@ export default class Swiper extends React.Component {
         );
     }
     render() {
+        this._maxWidth = this.props.children && this.props.children.length * width || width;
+        this._maxMarginLeft = this._maxWidth - width;
         return (
             <View 
                 {...this._panResponder.panHandlers}
@@ -88,7 +89,7 @@ export default class Swiper extends React.Component {
                 <Animated.View
                     ref={e=>this._view = e}
                     style={[{height:this.props.height,width:this._maxWidth,flexDirection:'row',marginLeft:this.state.marginLeftAnim}]}>
-                    {this.props.children.map((v,k)=>{
+                    {this.props.children && this.props.children.map((v,k)=>{
                         return <View key={k} style={{flex:1}}>{v}</View>
                     })}
                 </Animated.View>
