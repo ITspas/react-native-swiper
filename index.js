@@ -5,7 +5,8 @@ import React, {
     Animated,
     PanResponder,
     View,
-    Image
+    Image,
+    TouchableOpacity
 }
 from 'react-native';
 
@@ -17,7 +18,7 @@ export default class Swiper extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            marginLeftAnim: 0
+            marginLeftAnim: new Animated.Value(0)
         };
         this._index = 0;
         this._childrenLen = this.props.children && this.props.children.length || 1;
@@ -53,10 +54,27 @@ export default class Swiper extends React.Component {
             }
         })
     }
+    scrollTo(idx) {
+        let marginLeftAnim = new Animated.Value(this._index * -width);
+        this._index = idx;
+        this.setState({
+            marginLeftAnim: marginLeftAnim
+        });
+        Animated.spring(
+            this.state.marginLeftAnim, {
+                toValue: -this._index * width
+            },
+        ).start();
+    }
     renderButton(){
         let btns = [];
         for (let i = 0; i < this._childrenLen; i++) {
-            btns.push(<View key={i} style={[styles.btn,this._index == i && {backgroundColor:this.props.showButton.activeColor}]}></View>)
+            btns.push(
+                <TouchableOpacity key={i} onPress={e=>this.scrollTo(i)}>
+                    <View style={[styles.btn,this.props.buttonStyle,this._index == i && styles.abtn,this._index == i && this.props.activeStyle]}>
+                    </View>
+                </TouchableOpacity>
+            );
         }
         return (
             <View style={styles.btn_box}>{btns}</View>
@@ -79,7 +97,6 @@ export default class Swiper extends React.Component {
         );
     }
 }
-
 const styles = StyleSheet.create({
     btn_box: {
         height: 20,
@@ -90,8 +107,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         justifyContent: 'center',
     },
+    abtn: {
+        backgroundColor: '#FFFD'
+    },
     btn: {
-        backgroundColor: '#00f8',
+        backgroundColor: '#FFF9',
         width: 10,
         height: 10,
         borderRadius: 10,
