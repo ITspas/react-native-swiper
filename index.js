@@ -52,13 +52,16 @@ export default class Swiper extends React.Component {
             }
         })
     }
-    autoPlay(){
+    componentWillUnmount() {
         clearInterval(this._intervalHandle);
-        this._intervalHandle = setInterval(() => {
+    }
+    autoPlay() {
+        clearInterval(this._intervalHandle);
+        this.props && this.props.children && (this._intervalHandle = setInterval(() => {
             let idx = this._index + 1;
             idx >= this.props.children.length && (idx = 0);
             this.scrollTo(idx);
-        }, this.props.loopTime * 1000);
+        }, this.props.loopTime * 1000));
     }
     scrollTo(idx) {
         let marginLeftAnim = new Animated.Value(this._index * -width);
