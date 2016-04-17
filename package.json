@@ -1,0 +1,23 @@
+{
+  "name": "react-native-swiper",
+  "version": "1.0.0",
+  "description": "react-native-swiper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itspas/react-native-swiper.git"
+  },
+  "keywords": [
+    "react",
+    "swiper"
+  ],
+  "author": "calvin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itspas/react-native-swiper/issues"
+  },
+  "homepage": "https://github.com/itspas/react-native-swiper#readme"
+}
