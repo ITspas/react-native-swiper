@@ -39,7 +39,10 @@ export default class Swiper extends React.Component {
             },
             onPanResponderRelease: (e, g) => {
                 if (!this._isMove) return;
-                this._index = Math.abs(Math.round(this._marginLeft / width));
+                this._index -= Math.abs(g.dx) > (width / 4) ? (1 * g.dx > 0 ? 1 : -1) : 0;
+                this._index < 0 && (this._index = 0);
+                let len = this.props.children.length - 1;
+                this._index > len && (this._index = len);
                 this.setState({
                     marginLeftAnim: new Animated.Value(this._marginLeft)
                 });
