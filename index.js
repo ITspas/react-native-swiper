@@ -1,5 +1,6 @@
 'use strict'
-import React, {
+import React from 'react';
+import {
     StyleSheet,
     Dimensions,
     Animated,
@@ -11,8 +12,10 @@ import React, {
 from 'react-native';
 
 let {
-    width, height
+    width,
+    height
 } = Dimensions.get('window');
+
 
 export default class Swiper extends React.Component {
     constructor(props) {
@@ -46,11 +49,13 @@ export default class Swiper extends React.Component {
                 this.setState({
                     marginLeftAnim: new Animated.Value(this._marginLeft)
                 });
-                Animated.spring(
-                    this.state.marginLeftAnim, {
-                        toValue: -this._index * width
-                    },
-                ).start();
+                setTimeout(() => {
+                    Animated.spring(
+                        this.state.marginLeftAnim, {
+                            toValue: -this._index * width
+                        },
+                    ).start();
+                })
                 this._isMove = false;
             }
         })
